@@ -46,3 +46,24 @@ Review the Feed Reader Testing [Project Rubric](https://review.udacity.com/#!/pr
 19. Implement error handling for undefined variables and out-of-bound array access.
 20. When complete - all of your tests should pass. 
 21. Write a README file detailing all steps required to successfully run the application. If you have added additional tests (for Udacious Test Coverage),  provide documentation for what these future features are and what the tests are checking for.
+
+
+
+
+1、编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
+   编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
+   这个测试先判断 链接 或者 名字是否存在（即是否被定义），然后再 根据字符串长度 判断每项对应的数据是不是空。
+   
+2、写一个测试用例保证菜单元素默认是隐藏的。你需要分析 html 和 css 来搞清楚我们是怎么实现隐藏/展示菜单元素的
+   body 身上的class menu-hidden 决定了菜单的隐藏与显示，通过判断body标签上是否存在这个class，来测试
+   
+3、写一个测试用例保证当菜单图标被点击的时候菜单会切换可见状态。这个测试应该包含两个 expectation ： 当点击图标的时候菜单是否显示，再次点击的时候是否隐藏。
+   还是利用 body 身上的class menu-hidden 决定菜单的隐藏与显示，难点在于需要点击菜单图标，通过jquery 的trigger去触发菜单的点击事件（此处有参考优达学城论坛）
+   
+4、写一个叫做 "Initial Entries" 的测试用例，写一个测试保证 loadFeed 函数被调用而且工作正常，即在 .feed 容器元素里面至少有一个 .entry 的元素
+   这个测试我的理解是，保证loadFeed函数被调用后能成功运行（），所以只测试了loadFeed(0,done)，通过判断.feed的子元素个数大于0,
+   还有子元素是预期包含class  entry-link的模板
+   
+5、写一个叫做 "New Feed Selection" 的测试用例，写一个测试保证当用 loadFeed 函数加载一个新源的时候内容会真的改变。
+   这个测试我的理解是，确保loadFeed在加载不同的url时，列表里面的内容会相应改变，所以就测试了拿到allFeeds中的最后一项(allFeeds.length-1),与第1项（下标为0），
+   所加载出来的列表的第一项内容进行对比，如果不同，则表示每次加载不同的url时，列表内部的内容有更新
