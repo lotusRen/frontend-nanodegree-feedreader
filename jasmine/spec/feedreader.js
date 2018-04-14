@@ -3,20 +3,22 @@ $(function() {
     describe('RSS Feeds', function() {      
         it('are defined', function() {
             expect(allFeeds).toBeDefined();
-            expect(allFeeds.length).not.toBe(0);
+            expect(allFeeds.length).not.toEqual(0);
         });
 
-		it('All urls are not empty',function(){                     
+		it('All urls are not empty',function(){     
+			var regularExpressionUrl = /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/; // 检查 URL 格式是否正确的正规表达式
 			allFeeds.forEach(function(item){
-				expect(item.url).toBeDefined();            //确保每一项有url
-				expect(item.url.length).not.toEqual(0);	  //并且每个url都不为空
+				var urls=item.url;
+				noEmpty(urls);
+				expect(item.url).toMatch(regularExpressionUrl); // 检查格式
 			});
 		});
         
         it('All names are not empty',function(){
         		allFeeds.forEach(function(item){
-        			expect(item.name).toBeDefined();        //确保每一项有name
-        			expect(item.name.length).not.toEqual(0);  //并且每个name都不为空
+				var name=item.name;
+				noEmpty(name);
         		})
         });
     });
@@ -39,9 +41,9 @@ $(function() {
    		
    		it('the menu visibility or hidden',function(){
    			$menuIcon.trigger('click');                       //触发菜单的点击事件
-   			expect($body.hasClass('menu-hidden')).toBeFalsy();
+   			expect($body.hasClass('menu-hidden')).toBe(false);
    			$menuIcon.trigger('click');
-   			expect($body.hasClass('menu-hidden')).toBeTruthy();
+   			expect($body.hasClass('menu-hidden')).toBe(true);
    		});
    });
 	
@@ -52,10 +54,10 @@ $(function() {
 			$container = $('.feed');						
 			loadFeed(0,done);					
 		});
-		it('the loadFeed function is called and completes its work',function(done){        	
+		it('the loadFeed function is called and completes its work',function(){        	
 			expect($container.children().length).toBeGreaterThan(0);           //.feed的子元素个数大于0
 			expect($container.children().hasClass('entry-link')).toBeTruthy();     //而且子元素是想要的模板元素
-			done();
+			
 		})
 	});
 
@@ -78,9 +80,14 @@ $(function() {
 			}); 						
    		});
    		
-   		it('The content actually changes',function(done){
+   		it('The content actually changes',function(){
    			expect(textOne).not.toEqual(lastTextOne);
-   			done();
+   			
    		});
  	 });
 });
+
+function noEmpty(str){             //判断一个url或者name是否存在，且不为空
+	expect(str).toBeDefined();            
+	expect(str.length).not.toEqual(0);	 
+}
